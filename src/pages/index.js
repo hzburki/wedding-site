@@ -22,6 +22,8 @@ const counterContainer = {
   padding: '2rem 3rem',
   minWidth: '50%',
   display: 'flex',
+  marginLeft: '1rem',
+  marginRight: '1rem',
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: "#F5FBFF",
