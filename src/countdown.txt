@@ -1,0 +1,49 @@
+import * as React from 'react';
+import { navigate } from 'gatsby';
+import { Alert } from 'react-bootstrap';
+import Countdown from 'react-countdown';
+
+import { LAUNCH_DATE_TIME } from "../config/constants"
+import '../style/style.scss';
+
+const moment = require('moment-timezone');
+
+const renderer = ({ days, hours, minutes, seconds, completed }, search, setLaunch) => {
+  const query = new URLSearchParams(search);
+  const isBackupCheckFailed = eval(query.get('backupCheckFailed'));
+  if (completed && !isBackupCheckFailed) {
+    // navigate('/');
+    setLaunch(true)
+  }
+  const getFormattedItem = (count, singularLabel, pluralLabel) => {
+    return `${
+      count > 0 ? `${count} ${count === 1 ? singularLabel : pluralLabel}` : ''
+    }`;
+  };
+
+  return (
+    <span>
+      {getFormattedItem(days, 'day', 'days')}{' '}
+      {getFormattedItem(hours, 'hour', 'hours')}{' '}
+      {getFormattedItem(minutes, 'minute', 'minutes')} {seconds}{' '}
+      {seconds === 1 ? 'second' : 'seconds'}{' '}
+      until launch
+    </span>
+  );
+};
+
+const ComingSoon = (props) => {
+  const { setLaunch, location: { search } = {} } = props;
+
+  const launchTime = moment.tz(LAUNCH_DATE_TIME, 'Europe/London').toDate();
+
+  return (
+    <Alert className='pt-0'>
+      <span className='coming-soon-text d-flex justify-content-center'>
+        <Countdown date={launchTime} renderer={(e) => renderer(e, search, setLaunch)} />
+      </span>
+    </Alert>
+  );
+};
+
+export default ComingSoon;
