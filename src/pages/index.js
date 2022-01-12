@@ -1,5 +1,6 @@
+import moment from 'moment'
 import * as React from "react"
-import moment from 'moment-timezone'
+import momentTz from 'moment-timezone'
 import Countdown from 'react-countdown';
 
 import { calculateIntervals } from "../helpers/timer"
@@ -9,15 +10,14 @@ const WEDDING_DATE = '2022-10-28 00:00:00';
 const IndexPage = () => {
   const renderer = (event) => {
     const { days, hours, minutes, seconds } = event
-    const { weeks, months } = calculateIntervals({ days })
+    const { months, daysInMonth } = calculateIntervals({ days })
     
     console.log('event', event)
 
     return (
       <span>
         {months}{' '}months{' '}
-        {weeks}{' '}weeks{' '}
-        {days}{' '}days{' '}
+        {daysInMonth}{' '}days{' '}
         {hours}{' '}hours{' '}
         {minutes}{' '}minutes{' '}
         {seconds}{' '}seconds{' '}
@@ -26,7 +26,9 @@ const IndexPage = () => {
     )
   }
 
-  const timezoneCorrectedData = moment.tz(WEDDING_DATE, 'Asia/Karachi').toDate();
+  const timezoneCorrectedData = momentTz.tz(WEDDING_DATE, 'Asia/Karachi').toDate();
+
+  console.log('days difference', moment().diff(timezoneCorrectedData, 'days')) 
 
   return (
     <Countdown 
