@@ -6,7 +6,8 @@ import { calculateIntervals } from "../helpers/timer"
 
 import "../styles/global.css"
 
-const WEDDING_DATE = '2022-10-28 00:00:00';
+const WEDDING_DATE = '2022-10-28 19:00:00';
+const timezoneCorrectedDate = momentTz.tz(WEDDING_DATE, 'Asia/Karachi');
 
 const pageStyle = {
   background: 'linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%)',
@@ -33,7 +34,7 @@ const counterContainer = {
 const fontStyle = {
   fontSize: '2rem',
   fontFamily: 'sans-serif',
-  color: '#5D536A'
+  color: '#5D536A',
 }
 
 const IndexPage = () => {
@@ -47,7 +48,8 @@ const IndexPage = () => {
   
   const renderer = (event) => {
     const { days, hours, minutes, seconds } = event
-    const { months, daysInMonth } = calculateIntervals({ days })
+    const { months, daysInMonth } = calculateIntervals({ timezoneCorrectedDate, days })
+
     
     return (
       <span style={fontStyle}>
@@ -63,13 +65,11 @@ const IndexPage = () => {
     )
   }
 
-  const timezoneCorrectedData = momentTz.tz(WEDDING_DATE, 'Asia/Karachi').toDate();
-
   return (
     <div style={pageStyle}>
       <div style={counterContainer}>
         <Countdown 
-          date={timezoneCorrectedData} 
+          date={timezoneCorrectedDate.toDate()} 
           renderer={(e) => renderer(e)} 
         />
       </div>
